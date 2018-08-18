@@ -28,6 +28,25 @@ function init(){
         player = new Player(name, p2Color);
         socket.emit('joinGame', { name, room: roomID });
       });
+
+      //When user keyup enter on input click button
+      $('#nameNew').keyup( (e) => {
+        if(e.which == 13){
+          $('#new').click();
+        }
+      });
+
+      $('#nameJoin').keyup( (e) => {
+        if(e.which == 13){
+          $('#join').click();
+        }
+      });
+
+      $('#room').keyup( (e) => {
+        if(e.which == 13){
+          $('#join').click();
+        }
+      });
     
       // New Game created by current client
       socket.on('newGame', (data) => {
