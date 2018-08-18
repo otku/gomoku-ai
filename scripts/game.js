@@ -81,11 +81,11 @@ class Game {
 
     //Set timer for turn
     setTimer(){
-      $("#time").text(`${player.getTimeForTurn()}:00`);
+      $("#time").text(`Time : ${player.getTimeForTurn()}`);
 
       timePass = setInterval(function(){
         player.timeForTurn--;
-        $("#time").text(`${player.getTimeForTurn()}:00`);
+        $("#time").text(`Time : ${player.getTimeForTurn()}`);
         //If time is even zero, then other player wins!
         if(player.getTimeForTurn() == 0){
 
