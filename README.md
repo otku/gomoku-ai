@@ -16,3 +16,5 @@ If you want to play this game, you have to download all files from this reposito
 - Run ```npm install```
 - Run ```npm start```
 - Go to ```http://localhost:8888/``` and play with your friend on other browser.
+
+This game works in 100% fine on Chrome and Firefox.
