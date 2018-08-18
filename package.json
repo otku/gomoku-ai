@@ -1,0 +1,14 @@
+{
+  "name": "gomoku",
+  "version": "1.0.0",
+  "description": "Simple gomoku multiplayer game.",
+  "main": "server.js",
+  "author": "pawe9N",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jquery": "^3.1.1",
+    "socket.io": "^1.7.1"
+  }
+}

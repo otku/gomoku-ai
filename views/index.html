@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Gomoku</title>
+		<link rel="stylesheet" href="../styles/style.css">
+		<link rel="icon" href="../images/blackPawn.png">
+	</head>
+	<body>
+		<div class="container">
+			<div class="menu">
+				<h1 id="title">Gomoku</h1>
+				<h2 id="alert"></h2>
+				<h3 class="welcome">Hello, Welcome in the gomoku multiplayer game site!</h3>
+				<div id="form">
+					<h4>Create a new game:</h4>
+					<input type="text" name="name" id="nameNew" placeholder="Enter your name" required>
+					<button id="new">New Game</button>
+					<br><br>
+					<h4>Join to the existing game:</h4>
+					<input type="text" name="name" id="nameJoin" placeholder="Enter your name" required>
+					<input type="text" name="room" id="room" placeholder="Enter Game ID" required>
+					<button id="join">Join Game</button>
+				</div>		
+			</div>
+			<div class="gameBoard">
+				<h2 id="userHello"></h2>
+				<h3 id="turn"></h3>
+				<div id="color"></div>
+				<div class="center"></div>
+				<div id="time">Not your turn!</div>
+				<button class="goBack" onclick="window.location.reload()">Go back</button>
+			</div>
+		</div>
+		<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+		<script src="../socket.io/socket.io.js"></script>
+		<script src="../scripts/player.js"></script>
+		<script src="../scripts/game.js"></script>
+		<script src="../scripts/room.js"></script>
+	</body>
+</html>
