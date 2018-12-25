@@ -19,7 +19,7 @@ If you want to play this game, you have to download all files from this reposito
 
 This game works in 100% fine on Chrome and Firefox.
 
-## Litle demo with gifs
+## Little demo with gifs
 - ordinary game
 <img src="https://i.imgur.com/qqAUykw.gif">
 
