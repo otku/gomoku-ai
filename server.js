@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-
+const fs = require('fs');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -51,6 +51,12 @@ io.on('connection', (socket) => {
         numberOfRooms--;
         socket.broadcast.to(data.room).emit('gameEnd', data);
         socket.leave(data.room);
+        fs.writeFile("output.txt",JSON.stringify(data),'utf8', function (err) {
+            if(err) {
+                console.log("error occurred");
+                return console.log(err);
+            }
+        })
     });
 
     socket.on('disconnecting', function () {

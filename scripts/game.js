@@ -7,14 +7,16 @@ class Game {
       //array for savings movements of players
       this.board = [];
       //count of moves
-      this.moves = 0
+      this.count = 0
+      //array for storing
+      this.moves = [];
     }
-  
+
     //Create the Game board and attach click event to tiles
     createGameBoard() {
       function tileClickHandler() {
         let row, col;
-        
+
         row = game.getRowFromTile(this.id);
         col = game.getColFromTile(this.id);
 
@@ -25,12 +27,12 @@ class Game {
         }
 
         //In gomoku first move for blacks have to be in the middle tile
-        if(game.moves == 0 && !(row == 7 && col == 7)){
+        if(game.count == 0 && !(row == 7 && col == 7)){
           alert('You have to put pawn in the middle of grid!');
           return;
         }
         //In gomoku second move for blacks have to be beyond 5x5 grid in the middle
-        else if(game.moves == 2 && (row >= 5 && row <= 9 && col >= 5 && col <= 9)){
+        else if(game.count == 2 && (row >= 5 && row <= 9 && col >= 5 && col <= 9)){
           alert('You have to put pawn beyond 5x5 grid in the middle!');
           return;
         }
@@ -47,13 +49,13 @@ class Game {
 
           //Check if player win
           game.checkWinner();
-          
+
           player.setCurrentTurn(false);
         }
-      }    
+      }
       $('#color').css("background-color", `${player.getPlayerColor()}`);
       game.createTiles(tileClickHandler);
-      if(player.getPlayerColor() != "white" && this.moves == 0){
+      if(player.getPlayerColor() != "white" && this.count == 0){
         game.setTimer();
       }else{
         $(".center").prop(`disabled`, true);
@@ -100,7 +102,7 @@ class Game {
           socket.emit('gameEnded', {
             room: game.getRoomId(),
             message: winMessage,
-          });  
+          });
 
           game.endGameMessage(winMessage);
 
@@ -125,10 +127,12 @@ class Game {
       if(!player.getCurrentTurn()){
         game.setTimer();
         $(".center").prop(`disabled`, false);
-      }
+     }
       $(`#${tile}`).css("backgroundImage", `url(images/${color}Pawn.png)`).prop('disabled', true);
       this.board[row][col] = color[0];
-      this.moves++;
+      //alert('player:' + color + 'row:' + row + 'column:' + col + 'count:' + this.count);
+      this.moves.push([row,col]);
+      this.count++;
     }
 
     //Get row from tile id
@@ -177,7 +181,7 @@ class Game {
       setTimeout(function(){
         $( ".gameBoard").css('display', 'none');
         $( ".center" ).empty();
-  
+
         if(message.includes(player.getPlayerColor())){
            $("#alert").text("You win!");
            setTimeout(function(){
@@ -199,7 +203,7 @@ class Game {
             location.reload();
           }, 2000);
         }
-  
+
         $('.menu').css('display', 'block');
         $( ".welcome" ).remove();
       }, 1000);
@@ -253,14 +257,14 @@ class Game {
             {
                 if(color != game.board[row + i][col + i]){
                   match = false;
-                }                     
+                }
             }
             if(match){
               this.announceWinner();
               return;
             }
         }
-      }  
+      }
     }
 
     //Check if player has 5 pawns in diagonal from top right to bottom left
@@ -274,18 +278,18 @@ class Game {
                 {
                     if(color != game.board[row + i][col - i]){
                       match = false;
-                    }                     
+                    }
                 }
-            
+
               if(match){
                 this.announceWinner();
                 return;
               }
           }
         }
-      }  
+      }
     }
-    
+
     //Check if player win after his move
     checkWinner() {
       this.checkInHorizontal(player.getPlayerColor()[0]);
@@ -293,7 +297,7 @@ class Game {
       this.checkInDiagonalTopLeftBottomRight(player.getPlayerColor()[0]);
       this.checkInDiagonalTopRightBottomLeft(player.getPlayerColor()[0]);
 
-      //If board is full of pawns and no-one win then send that is draw 
+      //If board is full of pawns and no-one win then send that is draw
       const drawMessage = 'Game ended with draw';
       if (this.checkdraw()) {
         socket.emit('gameEnded', {
@@ -305,7 +309,7 @@ class Game {
     }
 
     checkdraw() {
-      return this.moves >= 15*15;
+      return this.count >= 15*15;
     }
 
     //When player is disconnected
@@ -314,15 +318,19 @@ class Game {
       socket.emit('gameEnded', {
         room: this.getRoomId(),
         message: message,
+          moves: this.moves,
       });
     }
 
     //Announce if winner is in current client, and broadcast this message to opponent
     announceWinner() {
       const message = player.getPlayerColor();
+        const moves = player.get;
       socket.emit('gameEnded', {
         room: this.getRoomId(),
-        message,
+        message:message,
+          moves: this.moves,
+
       });
       this.endGameMessage(message);
     }
