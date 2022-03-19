@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
-require('dotenv').config();
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config()
+}
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
