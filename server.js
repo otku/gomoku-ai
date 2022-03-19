@@ -67,5 +67,5 @@ io.on('connection', (socket) => {
       });
 });
 
-//listen on port 8888
-server.listen(process.env.PORT || 8888);
+//listen on port 3000
+server.listen(process.env.PORT || 3000);

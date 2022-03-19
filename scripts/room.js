@@ -1,5 +1,5 @@
 var player, game;
-const socket = io.connect('http://Localhost:8888');
+const socket = io.connect('http://Localhost:3000');
 
 function init(){
     const p1Color = "white";
@@ -15,7 +15,7 @@ function init(){
         player = new Player(name, p1Color);
         socket.emit('createGame', { name });
       });
-    
+
       // Join an existing game on the entered roomId.
       $('#join').on('click', () => {
         const name = $('#nameJoin').val();
@@ -47,34 +47,34 @@ function init(){
           $('#join').click();
         }
       });
-    
+
       // New Game created by current client
       socket.on('newGame', (data) => {
-        const message = `Hello ${data.name}<br/> Game ID: 
+        const message = `Hello ${data.name}<br/> Game ID:
           ${data.room}<br/> Waiting for player 2...`;
-    
+
         // Create game for first player
         game = new Game(data.room);
         game.displayBoard(message);
       });
-    
+
       //Player 1 joined the game
       socket.on('player1', (data) => {
         const message = `Hello, ${player.getPlayerName()}`;
         $('#userHello').html(message);
         player.setCurrentTurn(false);
       });
-    
+
       //Player 2 joined the game
       socket.on('player2', (data) => {
         const message = `Hello, ${data.name}`;
-    
+
         // Create game for player 2
         game = new Game(data.room);
         game.displayBoard(message);
         player.setCurrentTurn(true);
       });
-    
+
       //After played turn update board and give new turn to other player
       socket.on('turnPlayed', (data) => {
         let row = game.getRowFromTile(data.tile);
@@ -84,7 +84,7 @@ function init(){
         game.updateBoard(opponentColor, row, col, data.tile);
         player.setCurrentTurn(true);
       });
-    
+
       //Notify users that game has ended
       socket.on('gameEnd', (data) => {
         game.endGameMessage(data.message);
