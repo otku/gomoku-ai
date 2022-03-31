@@ -8,7 +8,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 let numberOfRooms = 0;
-/*
+
 const knex = require('knex')({
     client: 'pg',
     connection: {
@@ -19,7 +19,7 @@ const knex = require('knex')({
             database: 'gomoku'
         }
 });
-*/
+/*
 const knex = require('knex')({
     client: 'pg',
     connection: {
@@ -27,10 +27,24 @@ const knex = require('knex')({
         ssl:false
     }
 });
+*/
 //knex('events').insert({type: 'new', name:'terry'}).then(() => console.log('hello'));;
 app.use(express.static('.'));
 app.get('/', (request, respond) => {
     respond.sendFile(path.join(__dirname, 'views/index.html'));
+});
+
+app.get('/info', (req,res) => {
+    knex('events').select('*')
+        .then((events) => {
+            return res.json(events);
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.json({success:false,message:'error occurred'});
+        })
+
+
 });
 
 io.on('connection', (socket) => {
