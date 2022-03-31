@@ -4,7 +4,7 @@
  */
 exports.up = function(knex) {
      return knex.schema
-        .createTable('games', function (table) {
+        .createTable('events', function (table) {
             table.increments('id');
             table.timestamp('created_at').defaultTo(knex.fn.now());
             table.string('type').notNullable();
