@@ -1,7 +1,7 @@
 var timePass;
 //class with game logic
 class Game {
-    constructor(roomId) {
+    constructor(roomId,playerName) {
       //room for game
       this.roomId = roomId;
       //array for savings movements of players
@@ -163,6 +163,7 @@ class Game {
       return this.roomId;
     }
 
+
     // Send an update to the opponent game board
     playTurn(tile) {
       const clickedTile = $(tile).attr('id');
@@ -299,10 +300,13 @@ class Game {
 
       //If board is full of pawns and no-one win then send that is draw
       const drawMessage = 'Game ended with draw';
+        const playerName = player.getPlayerName();
       if (this.checkdraw()) {
         socket.emit('gameEnded', {
           room: this.getRoomId(),
           message: drawMessage,
+            moves: this.moves,
+            name: playerName
         });
         this.endGameMessage(drawMessage);
       }
@@ -315,23 +319,24 @@ class Game {
     //When player is disconnected
     onDisconnected(){
       const message = 'Game ended with disconnected';
+        const playerName = player.getPlayerName();
       socket.emit('gameEnded', {
         room: this.getRoomId(),
         message: message,
-          moves: this.moves,
+          moves:this.moves,
+          name: playerName
       });
     }
 
     //Announce if winner is in current client, and broadcast this message to opponent
     announceWinner() {
       const message = player.getPlayerColor();
-        const moves = player.get;
+        const playerName = player.getPlayerName();
       socket.emit('gameEnded', {
         room: this.getRoomId(),
         message:message,
           moves: this.moves,
-
+          name: playerName
       });
       this.endGameMessage(message);
-    }
-  }
+    } }

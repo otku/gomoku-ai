@@ -54,7 +54,8 @@ function init(){
           ${data.room}<br/> Waiting for player 2...`;
 
         // Create game for first player
-        game = new Game(data.room);
+        game = new Game(data.room, data.name);
+        console.log('data.name: ' + data.name);
         game.displayBoard(message);
       });
 
@@ -70,7 +71,7 @@ function init(){
         const message = `Hello, ${data.name}`;
 
         // Create game for player 2
-        game = new Game(data.room);
+        game = new Game(data.room, data.name);
         game.displayBoard(message);
         player.setCurrentTurn(true);
       });
